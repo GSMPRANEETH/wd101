@@ -1,52 +1,75 @@
-const today = new Date();
-const minDate = new Date(today.getFullYear() - 55, today.getMonth(), today.getDate());
-const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+<!DOCTYPE html>
+<html lang="en">
 
-const formatDate = (date) => date.toISOString().split('T')[0];
+<head>
+  <meta charset="UTF-8" />
+  <title>WD101 | Registration Form</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
 
-const dateInput = document.getElementById('dob');
-dateInput.min = formatDate(minDate);
-dateInput.max = formatDate(maxDate);
+<body class="bg-gradient-to-br from-gray-900 to-gray-800 text-white min-h-screen p-6 font-sans">
 
-const form = document.getElementById('regform');
-const tbody = document.querySelector('tbody');
-const STORAGE_KEY = 'userEntries';
+  <!-- Header -->
+  <header class="mb-10 text-center">
+    <h1 class="text-4xl font-extrabold tracking-tight text-white">📝 Registration Portal</h1>
+    <p class="text-gray-400 mt-2">Enter your details below to get started</p>
+  </header>
 
-window.addEventListener('load', () => {
-  const entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-  entries.forEach(addEntryToTable);
-});
+  <!-- Registration Form -->
+  <section class="max-w-2xl mx-auto bg-white text-gray-800 p-8 rounded-xl shadow-lg">
+    <h2 class="text-2xl font-bold mb-6 text-center">Registration Form</h2>
+    <form id="regform" class="space-y-5">
+      <div>
+        <label for="name" class="block font-semibold mb-1">Name</label>
+        <input type="text" id="name" name="name" required
+          class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label for="email" class="block font-semibold mb-1">Email</label>
+        <input type="email" id="email" name="email" required
+          class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label for="password" class="block font-semibold mb-1">Password</label>
+        <input type="password" id="password" name="password" required
+          class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label for="dob" class="block font-semibold mb-1">Date of Birth</label>
+        <input type="date" id="dob" name="dob" required
+          class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="flex items-center space-x-2">
+        <input type="checkbox" id="acpt" name="acpt" required>
+        <label for="acpt" class="font-medium">I accept the Terms and Conditions</label>
+      </div>
+      <button type="submit"
+        class="w-full py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition">Submit</button>
+    </form>
+  </section>
 
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
+  <!-- Entries Table -->
+  <section class="max-w-5xl mx-auto mt-12 bg-white text-gray-800 p-6 rounded-xl shadow-lg">
+    <h2 class="text-xl font-bold mb-4 text-center">📋 User Entries</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse border border-gray-300">
+        <thead class="bg-blue-600 text-white">
+          <tr class="divide-x divide-blue-500">
+            <th class="px-4 py-3">Name</th>
+            <th class="px-4 py-3">Email</th>
+            <th class="px-4 py-3">Password</th>
+            <th class="px-4 py-3">Dob</th>
+            <th class="px-4 py-3">Accepted terms?</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-300">
+          <!-- JS will insert rows here -->
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-  const name = document.getElementById('name').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
-  const dob = document.getElementById('dob').value;
-  const acpt = document.getElementById('acpt').checked;
+  <script src="index.js"></script>
+</body>
 
-  // Email regex validation
- 
-
-  const entry = { name, email, password, dob, acpt };
-  const entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-  entries.push(entry);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-
-  addEntryToTable(entry);
-  form.reset();
-});
-
-function addEntryToTable(entry) {
-  const row = document.createElement('tr');
-  row.className = 'divide-x divide-gray-300 hover:bg-gray-100 transition';
-  row.innerHTML = `
-    <td class="px-4 py-2">${entry.name}</td>
-    <td class="px-4 py-2">${entry.email}</td>
-    <td class="px-4 py-2">${entry.password}</td>
-    <td class="px-4 py-2">${entry.dob}</td>
-    <td class="px-4 py-2">${entry.acpt}</td>
-  `;
-  tbody.appendChild(row);
-}
+</html>
