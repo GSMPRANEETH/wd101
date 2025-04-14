@@ -22,7 +22,7 @@ window.addEventListener('load', () => {
 form.addEventListener('submit', event => {
   event.preventDefault();
   if (!form.checkValidity()) {
-    form.reportValidity();
+    form.reportValidity(); // This will show the native validation message
     return;
   }
 
@@ -45,7 +45,7 @@ form.addEventListener('submit', event => {
   form.reset();
 });
 
-// Function to add entry row to the table
+// Function to add an entry row to the table
 function addEntryToTable(entry) {
   const row = document.createElement('tr');
   row.className = 'divide-x divide-gray-300 hover:bg-gray-100 transition';
@@ -58,3 +58,9 @@ function addEntryToTable(entry) {
   `;
   tbody.appendChild(row);
 }
+
+// Clear stored entries and reload page when the button is clicked
+document.getElementById('clearData').addEventListener('click', () => {
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+});
