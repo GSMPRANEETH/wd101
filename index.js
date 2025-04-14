@@ -1,48 +1,56 @@
 const today = new Date();
-        const minDate = new Date(today.getFullYear() - 55, today.getMonth(), today.getDate());
-        const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-        const formatDate = (date) => date.toISOString().split('T')[0];
+const minDate = new Date(today.getFullYear() - 55, today.getMonth(), today.getDate());
+const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
 
-        const dateInput = document.getElementById('dob');
-        dateInput.min = formatDate(minDate);
-        dateInput.max = formatDate(maxDate);
+const formatDate = (date) => date.toISOString().split('T')[0];
 
-        const form = document.getElementById('regform');
-        const tbody = document.querySelector('tbody');
-        const STORAGE_KEY = 'userEntries';
+const dateInput = document.getElementById('dob');
+dateInput.min = formatDate(minDate);
+dateInput.max = formatDate(maxDate);
 
-        window.addEventListener('load', () => {
-            const entries = JSON.parse(sessionStorage.getItem(STORAGE_KEY)) || [];
-            entries.forEach(addEntryToTable);
-        });
+const form = document.getElementById('regform');
+const tbody = document.querySelector('tbody');
+const STORAGE_KEY = 'userEntries';
 
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
+window.addEventListener('load', () => {
+  const entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  entries.forEach(addEntryToTable);
+});
 
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const dob = document.getElementById('dob').value;
-            const acpt = document.getElementById('acpt').checked;
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
 
-            const entry = { name, email, password, dob, acpt };
-            const entries = JSON.parse(sessionStorage.getItem(STORAGE_KEY)) || [];
-            entries.push(entry);
-            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const dob = document.getElementById('dob').value;
+  const acpt = document.getElementById('acpt').checked;
 
-            addEntryToTable(entry);
-            form.reset();
-        });
+  // Email regex validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    alert("Please enter a valid email address.");
+    return;
+  }
 
-        function addEntryToTable(entry) {
-            const row = document.createElement('tr');
-            row.className = 'divide-x divide-gray-300 hover:bg-gray-100 transition';
-            row.innerHTML = `
-        <td class="px-4 py-2">${entry.name}</td>
-        <td class="px-4 py-2">${entry.email}</td>
-        <td class="px-4 py-2">${entry.password}</td>
-        <td class="px-4 py-2">${entry.dob}</td>
-        <td class="px-4 py-2">${entry.acpt ? 'Yes' : 'No'}</td>
-      `;
-            tbody.appendChild(row);
-        }
+  const entry = { name, email, password, dob, acpt };
+  const entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  entries.push(entry);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+
+  addEntryToTable(entry);
+  form.reset();
+});
+
+function addEntryToTable(entry) {
+  const row = document.createElement('tr');
+  row.className = 'divide-x divide-gray-300 hover:bg-gray-100 transition';
+  row.innerHTML = `
+    <td class="px-4 py-2">${entry.name}</td>
+    <td class="px-4 py-2">${entry.email}</td>
+    <td class="px-4 py-2">${entry.password}</td>
+    <td class="px-4 py-2">${entry.dob}</td>
+    <td class="px-4 py-2">${entry.acpt ? 'Yes' : 'No'}</td>
+  `;
+  tbody.appendChild(row);
+}
