@@ -1,7 +1,7 @@
+// Set the allowed date range for the Date of Birth field
 const today = new Date();
 const minDate = new Date(today.getFullYear() - 55, today.getMonth(), today.getDate());
 const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-
 const formatDate = date => date.toISOString().split('T')[0];
 
 const dateInput = document.getElementById('dob');
@@ -14,21 +14,43 @@ const STORAGE_KEY = 'userEntries';
 
 // Load existing entries from localStorage on page load
 window.addEventListener('load', () => {
-  const entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-  entries.forEach(addEntryToTable);
+  const storedEntries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  storedEntries.forEach(addEntryToTable);
 });
 
-// Always prevent default, then if form is invalid show native error messages
+// Custom email validation function that returns a boolean
+function validateEmail(element) {
+  // Check typeMismatch and patternMismatch in the browser's native validity
+  if (element.validity.typeMismatch || element.validity.patternMismatch) {
+    element.setCustomValidity("The email is not valid!");
+    element.reportValidity();
+    return false;
+  } else {
+    element.setCustomValidity(""); // Clear any previous error message
+    return true;
+  }
+}
+
+// Form submission event handler
 form.addEventListener('submit', event => {
   event.preventDefault();
+
+  // Perform native form validation first
   if (!form.checkValidity()) {
-    form.reportValidity(); // This will show the native validation message
+    form.reportValidity();
     return;
   }
 
-  // If form is valid, gather field values
+  // Now perform our custom email validation
+  const emailEl = document.getElementById('email');
+  if (!validateEmail(emailEl)) {
+    // Stop submission if email is invalid
+    return;
+  }
+
+  // If the form and email are valid, gather field values
   const name = document.getElementById('name').value.trim();
-  const email = document.getElementById('email').value.trim();
+  const email = emailEl.value.trim();
   const password = document.getElementById('password').value;
   const dob = document.getElementById('dob').value;
   const acpt = document.getElementById('acpt').checked;
@@ -37,10 +59,11 @@ form.addEventListener('submit', event => {
   const entry = { name, email, password, dob, acpt };
 
   // Retrieve stored entries, add the new entry, and update localStorage
-  const entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-  entries.push(entry);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  const storedEntries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  storedEntries.push(entry);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(storedEntries));
 
+  // Add the new entry to the table
   addEntryToTable(entry);
   form.reset();
 });
@@ -59,7 +82,7 @@ function addEntryToTable(entry) {
   tbody.appendChild(row);
 }
 
-// Clear stored entries and reload page when the button is clicked
+// Clear stored entries and reload page when the Clear All Entries button is clicked
 document.getElementById('clearData').addEventListener('click', () => {
   localStorage.removeItem(STORAGE_KEY);
   location.reload();
