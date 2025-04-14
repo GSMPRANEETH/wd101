@@ -27,11 +27,12 @@ form.addEventListener('submit', (event) => {
   const acpt = document.getElementById('acpt').checked;
 
   // Email regex validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    alert("Please enter a valid email address.");
-    return;
-  }
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|outlook|hotmail|email)\.com$/;
+
+if (!emailRegex.test(email)) {
+  alert("❌ Please enter a valid email address with domains like gmail.com, yahoo.com, etc.");
+  return;
+}
 
   const entry = { name, email, password, dob, acpt };
   const entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
