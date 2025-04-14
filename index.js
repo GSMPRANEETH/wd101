@@ -18,13 +18,12 @@ window.addEventListener('load', () => {
 });
 
 form.addEventListener('submit', (event) => {
-  event.preventDefault();
-
-  // Browser native email validation handles invalid email
   if (!form.checkValidity()) {
-    form.reportValidity(); // show built-in error
+    // Let the browser show the standard validation message (like for @ in email)
     return;
   }
+
+  event.preventDefault(); // Prevent only if the form is valid — now we handle submission
 
   const name = document.getElementById('name').value.trim();
   const email = document.getElementById('email').value.trim();
@@ -40,6 +39,7 @@ form.addEventListener('submit', (event) => {
   addEntryToTable(entry);
   form.reset();
 });
+
 
 function addEntryToTable(entry) {
   const row = document.createElement('tr');
