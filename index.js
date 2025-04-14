@@ -50,7 +50,7 @@ function addEntryToTable(entry) {
     <td class="px-4 py-2">${entry.email}</td>
     <td class="px-4 py-2">${entry.password}</td>
     <td class="px-4 py-2">${entry.dob}</td>
-    <td class="px-4 py-2">${entry.acpt ? 'Yes' : 'No'}</td>
+    <td class="px-4 py-2">${entry.acpt ? 'true' : 'false'}</td>
   `;
   tbody.appendChild(row);
 }
