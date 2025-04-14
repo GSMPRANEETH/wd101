@@ -26,15 +26,17 @@
       </div>
       <div>
         <label for="email" class="block font-semibold mb-1">Email</label>
-        <!-- Using type="email" along with a pattern ensures the browser performs native validation.
-             The pattern requires the email address to end with .com -->
+        <!-- Using type="email" with a strict pattern that:
+             - Ensures exactly one @
+             - Requires valid characters before and after the @
+             - Ends with ".com" -->
         <input
           type="email"
           id="email"
           name="email"
           required
-          pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$"
-          title="Please enter a valid email address ending with .com"
+          pattern="^(?!.*@.*@)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(com)$"
+          title="Please enter a valid email that contains one @ and ends with .com"
           class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
@@ -72,11 +74,18 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-300">
-          <!-- JS will insert rows here -->
+          <!-- JavaScript will insert rows here -->
         </tbody>
       </table>
     </div>
   </section>
+
+  <!-- Clear All Entries Button -->
+  <div class="max-w-5xl mx-auto mt-6 text-center">
+    <button id="clearData" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+      Clear All Entries
+    </button>
+  </div>
 
   <script src="index.js"></script>
 </body>
