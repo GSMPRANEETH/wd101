@@ -93,6 +93,27 @@
         element.setCustomValidity("");
       }
     }
+
+    const form = document.getElementById('regform');
+const dobInput = document.getElementById('dob');
+
+form.addEventListener('submit', (e) => {
+  const dobValue = new Date(dobInput.value);
+  if (!dobInput.value) return; // Required field handled by HTML
+
+  const today = new Date();
+
+  // Calculate min and max allowed DOB
+  const minDate = new Date(today.getFullYear() - 55, today.getMonth(), today.getDate());
+  const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+
+  if (dobValue < minDate || dobValue > maxDate) {
+    e.preventDefault(); // prevent form submission
+    alert('Age must be between 18 and 55 years.');
+    dobInput.focus();
+  }
+});
+
   </script>
 </body>
 
