@@ -1,138 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <title>WD101 | Registration Form</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Registration Form</title>
+<style>
+  /* Reset some default styles */
+  * {
+    box-sizing: border-box;
+  }
 
-<body class="bg-gradient-to-br from-gray-900 to-gray-800 text-white min-h-screen p-6 font-sans">
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f7f9fc;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
 
-  <!-- Header -->
-  <header class="mb-10 text-center">
-    <h1 class="text-4xl font-extrabold tracking-tight text-white">📝 Registration Portal</h1>
-    <p class="text-gray-400 mt-2">Enter your details below to get started</p>
-  </header>
+  h1 {
+    color: #333;
+    margin-bottom: 20px;
+  }
 
-  <!-- Registration Form -->
-  <section class="max-w-2xl mx-auto bg-white text-gray-800 p-8 rounded-xl shadow-lg">
-    <h2 class="text-2xl font-bold mb-6 text-center">Registration Form</h2>
-    <form id="regform" class="space-y-5">
-      <div>
-        <label for="name" class="block font-semibold mb-1">Name</label>
-        <input type="text" id="name" name="name" required
-          class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-      </div>
-      <div>
-        <label for="email" class="block font-semibold mb-1">Email</label>
-        <!-- Use type="email" with a pattern to enforce one '@' and that the email ends with .com.
-             A title attribute provides the native error message if invalid. -->
-        <input
-          type="email"
-          id="email"
-          name="email"
-          required
-          pattern="^(?!.*@.*@)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(com)$"
-          title="Please enter a valid email address with one '@' and ending with .com"
-          class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-      <div>
-        <label for="password" class="block font-semibold mb-1">Password</label>
-        <input type="password" id="password" name="password" required
-          class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-      </div>
-      <div>
-        <label for="dob" class="block font-semibold mb-1">Date of Birth</label>
-        <input type="date" id="dob" name="dob" required
-          class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-      </div>
-      <div class="flex items-center space-x-2">
-        <input type="checkbox" id="acpt" name="acpt" required>
-        <label for="acpt" class="font-medium">I accept the Terms and Conditions</label>
-      </div>
-      <!-- Assign an id to the submit button so it can be referenced if needed -->
-      <button id="submit" type="submit"
-        class="w-full py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition">Submit</button>
-    </form>
-  </section>
+  form {
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgb(0 0 0 / 0.1);
+    max-width: 400px;
+    width: 100%;
+  }
 
-  <!-- Entries Table -->
-  <section class="max-w-5xl mx-auto mt-12 bg-white text-gray-800 p-6 rounded-xl shadow-lg">
-    <h2 class="text-xl font-bold mb-4 text-center">📋 User Entries</h2>
-    <div class="overflow-x-auto">
-      <table class="w-full text-left border-collapse border border-gray-300">
-        <thead class="bg-blue-600 text-white">
-          <tr class="divide-x divide-blue-500">
-            <th class="px-4 py-3">Name</th>
-            <th class="px-4 py-3">Email</th>
-            <th class="px-4 py-3">Password</th>
-            <th class="px-4 py-3">Dob</th>
-            <th class="px-4 py-3">Accepted terms?</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-300">
-          <!-- JavaScript will insert rows here -->
-        </tbody>
-      </table>
-    </div>
-  </section>
+  form label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #444;
+  }
 
+  form input[type="text"],
+  form input[type="email"],
+  form input[type="password"],
+  form input[type="date"] {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 6px;
+    border: 1.8px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
 
+  form input[type="text"]:focus,
+  form input[type="email"]:focus,
+  form input[type="password"]:focus,
+  form input[type="date"]:focus {
+    border-color: #007BFF;
+    outline: none;
+  }
 
-  <script src="index.js">
-    const email = document.getElementById('email')
-    email.addEventListener('input', () => validate(email));
+  form input[type="checkbox"] {
+    margin-left: 0;
+    transform: scale(1.15);
+    cursor: pointer;
+  }
 
-    function validate(element){
-      if(element.validity.typeMismatch){
-      element.setCustomValidity("The Email is not in the right format!!!");
-      element.reportValidity();
-      }else{
-        element.setCustomValidity("");
-      }
+  form label[for="terms"] {
+    font-weight: normal;
+    display: inline-block;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  button[type="submit"] {
+    background-color: #007BFF;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 20px;
+    width: 100%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.25s ease;
+  }
+
+  button[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+
+  table {
+    margin-top: 35px;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 800px;
+    background: white;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  thead {
+    background-color: #007BFF;
+    color: white;
+  }
+
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 1rem;
+  }
+
+  tbody tr:hover {
+    background-color: #f1f7ff;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    form, table {
+      width: 95%;
     }
 
-    const form = document.getElementById('regform');
-const dobInput = document.getElementById('dob');
-
-function setDobLimits() {
-  const today = new Date();
-  const minYear = today.getFullYear() - 55;
-  const maxYear = today.getFullYear() - 18;
-
-  const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-  const day = String(today.getDate()).padStart(2, '0');
-
-  const minDate = `${minYear}-${month}-${day}`;
-  const maxDate = `${maxYear}-${month}-${day}`;
-
-  dobInput.setAttribute('min', minDate);
-  dobInput.setAttribute('max', maxDate);
-}
-
-// Call on page load
-window.addEventListener('DOMContentLoaded', setDobLimits);
-
-// Validate on form submit
-form.addEventListener('submit', (e) => {
-  const dobValue = new Date(dobInput.value);
-  if (!dobInput.value) return; // Let required attribute handle empty
-
-  const today = new Date();
-  const minDate = new Date(today.getFullYear() - 55, today.getMonth(), today.getDate());
-  const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-
-  if (dobValue < minDate || dobValue > maxDate) {
-    e.preventDefault();
-    alert('You must be between 18 and 55 years old to register.');
-    dobInput.focus();
+    th, td {
+      font-size: 0.9rem;
+      padding: 10px 8px;
+    }
   }
-});
+</style>
+</head>
+<body>
 
+<h1>Registration Form</h1>
 
-  </script>
+<form id="registrationForm">
+  <label for="name">
+    Name:
+    <input type="text" id="name" required />
+  </label>
+
+  <label for="email">
+    Email:
+    <input type="email" id="email" required />
+  </label>
+
+  <label for="password">
+    Password:
+    <input type="password" id="password" required />
+  </label>
+
+  <label for="dob">
+    Date of Birth:
+    <input type="date" id="dob" required />
+  </label>
+
+  <label>
+    <input type="checkbox" id="terms" />
+    <span for="terms">Accept Terms and Conditions</span>
+  </label>
+
+  <button type="submit">Register</button>
+</form>
+
+<table border="1" id="dataTable" aria-label="Registration data table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Password</th>
+      <th>Dob</th>
+      <th>Accepted terms?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- rows inserted here -->
+  </tbody>
+</table>
+
+<script>
+  const form = document.getElementById('registrationForm');
+  const tableBody = document.querySelector('#dataTable tbody');
+  const storageKey = 'registrations';
+
+  function isValidDOB(dateString) {
+    const dob = new Date(dateString);
+    if (isNaN(dob)) return false;
+
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+
+    const m = today.getMonth() - dob.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+      age--;
+    }
+
+    return age >= 18 && age <= 55;
+  }
+
+  function loadRegistrations() {
+    const saved = localStorage.getItem(storageKey);
+    if (!saved) return [];
+    try {
+      return JSON.parse(saved);
+    } catch {
+      return [];
+    }
+  }
+
+  function saveRegistrations(data) {
+    localStorage.setItem(storageKey, JSON.stringify(data));
+  }
+
+  function addRow(data) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${data.name}</td>
+      <td>${data.email}</td>
+      <td>${data.password}</td>
+      <td>${data.dob}</td>
+      <td>${data.acceptedTerms}</td>
+    `;
+    tableBody.appendChild(tr);
+  }
+
+  function renderTable() {
+    tableBody.innerHTML = '';
+    const registrations = loadRegistrations();
+    registrations.forEach(addRow);
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const password = form.password.value;
+    const dob = form.dob.value;
+    const acceptedTerms = form.terms.checked;
+
+    if (!isValidDOB(dob)) {
+      alert('Date of birth must be for age between 18 and 55.');
+      return;
+    }
+
+    const newEntry = { name, email, password, dob, acceptedTerms };
+
+    const registrations = loadRegistrations();
+    registrations.push(newEntry);
+    saveRegistrations(registrations);
+
+    addRow(newEntry);
+
+    form.reset();
+  });
+
+  window.addEventListener('load', renderTable);
+</script>
+
 </body>
-
 </html>
