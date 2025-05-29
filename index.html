@@ -81,7 +81,19 @@
 
 
 
-  <script src="index.js"></script>
+  <script src="index.js">
+    const email = document.getElementById('email')
+    email.addEventListener('input', () => validate(email));
+
+    function validate(element){
+      if(element.validity.typeMismatch){
+      element.setCustomValidity("The Email is not in the right format!!!");
+      element.reportValidity();
+      }else{
+        element.setCustomValidity("");
+      }
+    }
+  </script>
 </body>
 
 </html>
