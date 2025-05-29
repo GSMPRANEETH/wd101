@@ -97,22 +97,40 @@
     const form = document.getElementById('regform');
 const dobInput = document.getElementById('dob');
 
+function setDobLimits() {
+  const today = new Date();
+  const minYear = today.getFullYear() - 55;
+  const maxYear = today.getFullYear() - 18;
+
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+  const day = String(today.getDate()).padStart(2, '0');
+
+  const minDate = `${minYear}-${month}-${day}`;
+  const maxDate = `${maxYear}-${month}-${day}`;
+
+  dobInput.setAttribute('min', minDate);
+  dobInput.setAttribute('max', maxDate);
+}
+
+// Call on page load
+window.addEventListener('DOMContentLoaded', setDobLimits);
+
+// Validate on form submit
 form.addEventListener('submit', (e) => {
   const dobValue = new Date(dobInput.value);
-  if (!dobInput.value) return; // Required field handled by HTML
+  if (!dobInput.value) return; // Let required attribute handle empty
 
   const today = new Date();
-
-  // Calculate min and max allowed DOB
   const minDate = new Date(today.getFullYear() - 55, today.getMonth(), today.getDate());
   const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
 
   if (dobValue < minDate || dobValue > maxDate) {
-    e.preventDefault(); // prevent form submission
-    alert('Age must be between 18 and 55 years.');
+    e.preventDefault();
+    alert('You must be between 18 and 55 years old to register.');
     dobInput.focus();
   }
 });
+
 
   </script>
 </body>
